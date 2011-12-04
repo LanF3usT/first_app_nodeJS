@@ -3,11 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <title>Première application - NodeJS</title>
+	<script src="/socket.io/socket.io.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 </head>
 <body>
 	<header>
 		<h1>Première application - NodeJS</h1>
 	</header>
+	
+	<div id="content">
+		<p>Bienvenue sur l'application de : </p>
+		
+		<form>
+			<input name="nom" /><br>
+			<input name="prenom" /><br>
+			<input type="submit" />
+		</form>
+	</div>
+	
+	<script>
+		var socket = io.connect()
+		
+		socket.on('send_data', function (data) {
+			var donnees = JSON.parse(data)
+		  $('#content p').append(donnees.prenom + " " + donnees.nom)
+		})
+		
+		$('form').submit(function() {
+			var donnees = { 'nom' : $('input[name=nom]').val(), 'prenom' : $('input[name=prenom]').val() }
+			socket.emit('push_data', JSON.stringify(donnees))
+		})
+	</script>
 </body>
 </html>

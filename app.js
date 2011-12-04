@@ -7,3 +7,18 @@ var app = http.createServer(function (req, res) {
   	res.end(data)
 	})
 }).listen(8080)
+
+var io = require('socket.io')
+var io = io.listen(app)
+
+var donnees = fs.readFileSync("data.json", 'utf8')
+
+io.sockets.on('connection', function (socket) {
+  socket.emit('send_data', donnees)
+
+	socket.on('push_data', function (data) {
+		fs.writeFile("data.json", data, 'utf-8', function() {
+			donnees = fs.readFileSync("data.json", 'utf8')
+		})
+	})
+})

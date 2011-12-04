@@ -1,2 +1,5 @@
-Lancer l'application :
-	node app.js
+Dépendance : npm install socket.io
+
+Créer le fichier data.json
+
+Pour lancer l'application : node app.js
